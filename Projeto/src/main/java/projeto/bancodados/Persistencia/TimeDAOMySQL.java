@@ -11,7 +11,7 @@ import java.util.List;
 public class TimeDAOMySQL  implements TimeDAO{
     private String createSQL = "INSERT INTO Time VALUES(?,?,?,?,?)";
     private String readSQL = "SELECT * FROM Time";
-    private String updateSQL = "UPDATE ";
+    private String updateSQL = "UPDATE Time SET nome=?, anoInauguracao=?, cidade=?, estado=? WHERE id_time=? ";
     private String deleteSQL = "DELETE FROM Time WHERE id_time =?";
 
 
@@ -49,9 +49,6 @@ public class TimeDAOMySQL  implements TimeDAO{
         }
         return false;
     }
-
-
-
     @Override
     public List<Time> read() {
         Connection conexao = mysql.getConnection();
@@ -65,9 +62,10 @@ public class TimeDAOMySQL  implements TimeDAO{
                 Time time1 = new Time();
                 time1.setIdTime(rs.getString("id_time"));
                 time1.setNome(rs.getString("nome"));
-                time1.setAnoFund(rs.getInt("anoFund"));
-                time1.setCidade(rs.getString("curso"));
+                time1.setAnoFund(rs.getInt("anoInauguracao"));
+                time1.setCidade(rs.getString("cidade"));
                 time1.setEstado(rs.getString("estado"));
+                time.add(time1);
             }
 
             return time;
@@ -86,20 +84,17 @@ public class TimeDAOMySQL  implements TimeDAO{
         }
         return time;
     }
-
-
-
     @Override
     public boolean update(Time time) {
         Connection conexao = mysql.getConnection();
         try {
             PreparedStatement stm = conexao.prepareStatement(updateSQL);
 
-            stm.setString(1, time.getIdTime());
-            stm.setString(2, time.getNome());
-            stm.setInt(3, time.getAnoFund());
-            stm.setString(4, time.getCidade());
-            stm.setString(5, time.getEstado());
+            stm.setString(5, time.getIdTime());
+            stm.setString(1, time.getNome());
+            stm.setInt(2, time.getAnoFund());
+            stm.setString(3, time.getCidade());
+            stm.setString(4, time.getEstado());
 
             int registros = stm.executeUpdate();
 
@@ -131,10 +126,6 @@ public class TimeDAOMySQL  implements TimeDAO{
 
 
             stm.setString(1, time.getIdTime());
-            stm.setString(2, time.getNome());
-            stm.setInt(3, time.getAnoFund());
-            stm.setString(4, time.getCidade());
-            stm.setString(5, time.getEstado());
 
             int registros = stm.executeUpdate();
 

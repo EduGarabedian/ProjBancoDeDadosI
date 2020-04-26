@@ -5,11 +5,11 @@ import projeto.bancodados.Entidades.Aplicativo;
 import java.sql.*;
 import java.util.*;
 
-public class AplicativoDAOMySQL implements AplicaticoDAO{
+public class AplicativoDAOMySQL implements AplicativoDAO{
     private String createSQL = "INSERT INTO Aplicativo VALUES (?,?,?,?)";
     private String readSQL = "SELECT * FROM Aplicativo";
-    private String updateSQL = "UPDATE Aplicativo SET id=?, nome=?, desenvolvedor=?, numeroDownloads=? WHERE id=?";
-    private String deleteSQL = "DELETE FROM Aplicativo id=?";
+    private String updateSQL = "UPDATE Aplicativo SET nome=?, desenvolvedor=?, numeroDownloads=? WHERE id=?";
+    private String deleteSQL = "DELETE FROM Aplicativo WHERE id=?";
 
     private final MySQLConnection mysql = new MySQLConnection();
 
@@ -41,7 +41,6 @@ public class AplicativoDAOMySQL implements AplicaticoDAO{
         }
         return false;
     }
-
     @Override
     public List<Aplicativo> read() {
         Connection conexao = mysql.getConnection();
@@ -74,16 +73,15 @@ public class AplicativoDAOMySQL implements AplicaticoDAO{
         }
         return aplicativos;
     }
-
     @Override
     public boolean update(Aplicativo aplicativo) {
         Connection conexao= mysql.getConnection();
         try{
             PreparedStatement statement= conexao.prepareStatement(updateSQL);
 
-            statement.setString(1,aplicativo.getId());
-            statement.setString(2,aplicativo.getNome());
-            statement.setString(3,aplicativo.getDesenvolvedor());
+            statement.setString(4,aplicativo.getId());
+            statement.setString(1,aplicativo.getNome());
+            statement.setString(2,aplicativo.getDesenvolvedor());
             statement.setInt(3,aplicativo.getNumeroDownloads());
 
             int registros= statement.executeUpdate();
@@ -103,7 +101,6 @@ public class AplicativoDAOMySQL implements AplicaticoDAO{
         }
         return false;
     }
-
     @Override
     public boolean delete(Aplicativo aplicativo) {
         Connection conexao = mysql.getConnection();

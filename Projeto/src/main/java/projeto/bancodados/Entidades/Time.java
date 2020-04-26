@@ -62,6 +62,6 @@ public class Time {
     }
 
     public String toString(){
-        return idTime + nome + anoFund + cidade + estado;
+        return idTime + "[nome: "+nome+" , anoFund: "+anoFund+", cidade: "+cidade+", estado: "+estado + " ]";
     }
 }
